@@ -1,0 +1,419 @@
+
+
+Je suis désolé pour ce problème technique. Parfois, selon l'interface ou l'écran que tu utilises, les longs codes peuvent s'afficher mal.
+
+Voici le code HTML complet et corrigé. Il est enfermé dans une case noire.
+
+**Ce que tu dois faire :**
+1. Cherche le bouton **"Copy code"** (ou Copier) en haut à droite de la boîte noire ci-dessous.
+2. Clique dessus.
+
+```html
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yuppe - Tous les métiers, une seule plateforme</title>
+    <!-- Tailwind CSS (Design moderne) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome (Icônes) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0ea5e9', // Bleu ciel professionnel
+                            600: '#0284c7',
+                            900: '#0c4a6e',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+        .hide { display: none; }
+        .fade-in { animation: fadeIn 0.3s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+</head>
+<body class="text-slate-800">
+
+    <!-- NAVIGATION -->
+    <nav class="bg-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <i class="fas fa-layer-group text-brand-600 text-2xl mr-2"></i>
+                    <span class="font-bold text-xl tracking-tight text-slate-900">Yuppe</span>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#" class="text-slate-600 hover:text-brand-600 font-medium">Accueil</a>
+                    <a href="#feed" class="text-slate-600 hover:text-brand-600 font-medium">Annonces</a>
+                    <a href="#" onclick="openModal('postJobModal')" class="text-brand-600 hover:text-brand-900 font-medium">Publier une offre</a>
+                    <button onclick="openModal('loginModal')" class="bg-brand-600 text-white px-4 py-2 rounded-lg hover:bg-brand-700 transition">Connexion</button>
+                </div>
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center">
+                    <button class="text-slate-600 focus:outline-none">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <div class="bg-gradient-to-r from-brand-900 to-brand-600 text-white py-16 px-4">
+        <div class="max-w-4xl mx-auto text-center">
+            <h1 class="text-3xl md:text-5xl font-bold mb-4">Tous les métiers, une seule plateforme</h1>
+            <p class="text-lg md:text-xl text-blue-100 mb-8">Trouvez le bon professionnel au Sénégal pour n'importe quel besoin.</p>
+            
+            <!-- Barre de Recherche -->
+            <div class="bg-white p-2 rounded-lg shadow-lg flex flex-col md:flex-row gap-2">
+                <div class="flex-1 relative">
+                    <i class="fas fa-search absolute left-3 top-3 text-slate-400"></i>
+                    <input type="text" id="searchInput" placeholder="Métier, compétence ou mot-clé (ex: Plombier, Maths...)" class="w-full pl-10 pr-4 py-2 text-slate-700 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-500">
+                </div>
+                <div class="relative md:w-1/3">
+                    <i class="fas fa-map-marker-alt absolute left-3 top-3 text-slate-400"></i>
+                    <select id="locationFilter" class="w-full pl-10 pr-4 py-2 text-slate-700 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-500 appearance-none bg-white">
+                        <option value="">Tout le Sénégal</option>
+                        <option value="Dakar">Dakar</option>
+                        <option value="Thiès">Thiès</option>
+                        <option value="Saint-Louis">Saint-Louis</option>
+                        <option value="Kaolack">Kaolack</option>
+                        <option value="Ziguinchor">Ziguinchor</option>
+                        <option value="Tambacounda">Tambacounda</option>
+                        <option value="Diourbel">Diourbel</option>
+                        <option value="Louga">Louga</option>
+                        <option value="Fatick">Fatick</option>
+                        <option value="Kolda">Kolda</option>
+                        <option value="Matam">Matam</option>
+                        <option value="Kédougou">Kédougou</option>
+                        <option value="Sédhiou">Sédhiou</option>
+                    </select>
+                </div>
+                <button onclick="filterJobs()" class="bg-brand-500 hover:bg-brand-600 text-white px-6 py-2 rounded-md font-semibold transition">
+                    Rechercher
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT (FEED) -->
+    <main class="max-w-7xl mx-auto px-4 py-8" id="feed">
+        
+        <!-- Filtres Rapides -->
+        <div class="mb-8 overflow-x-auto pb-2">
+            <div class="flex space-x-2 min-w-max">
+                <button onclick="filterByCategory('all')" class="px-4 py-2 bg-slate-800 text-white rounded-full text-sm font-medium hover:bg-slate-700">Tous</button>
+                <button onclick="filterByCategory('Intellectuel')" class="px-4 py-2 bg-white border border-slate-200 text-slate-700 rounded-full text-sm font-medium hover:bg-slate-50">Intellectuel</button>
+                <button onclick="filterByCategory('Manuel')" class="px-4 py-2 bg-white border border-slate-200 text-slate-700 rounded-full text-sm font-medium hover:bg-slate-50">BTP & Manuel</button>
+                <button onclick="filterByCategory('Médical')" class="px-4 py-2 bg-white border border-slate-200 text-slate-700 rounded-full text-sm font-medium hover:bg-slate-50">Médical</button>
+                <button onclick="filterByCategory('Agricole')" class="px-4 py-2 bg-white border border-slate-200 text-slate-700 rounded-full text-sm font-medium hover:bg-slate-50">Agricole</button>
+                <button onclick="filterByCategory('Domestique')" class="px-4 py-2 bg-white border border-slate-200 text-slate-700 rounded-full text-sm font-medium hover:bg-slate-50">Domestique</button>
+                <button onclick="filterByCategory('Touristique')" class="px-4 py-2 bg-white border border-slate-200 text-slate-700 rounded-full text-sm font-medium hover:bg-slate-50">Tourisme</button>
+            </div>
+        </div>
+
+        <!-- Grille des Annonces -->
+        <div id="jobsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Les cartes seront injectées ici par JavaScript -->
+        </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-900 text-slate-300 py-10 mt-12">
+        <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div>
+                <div class="flex items-center mb-4">
+                    <i class="fas fa-layer-group text-brand-500 text-xl mr-2"></i>
+                    <span class="font-bold text-xl text-white">Yuppe</span>
+                </div>
+                <p class="text-sm">La plateforme de mise en relation professionnelle au Sénégal.</p>
+            </div>
+            <div>
+                <h3 class="text-white font-semibold mb-4">Contact Support</h3>
+                <p class="mb-2"><i class="fas fa-envelope mr-2"></i> louis.cicariot.tek.workspace@gmail.com</p>
+                <p><i class="fas fa-phone mr-2"></i> +221 76 164 22 85</p>
+            </div>
+            <div>
+                <h3 class="text-white font-semibold mb-4">Légal</h3>
+                <ul class="text-sm space-y-2">
+                    <li><a href="#" class="hover:text-white">Conditions d'utilisation</a></li>
+                    <li><a href="#" class="hover:text-white">Politique de confidentialité</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="text-center mt-8 text-xs text-slate-500">
+            &copy; 2024 ServicesN Platform. Tous droits réservés.
+        </div>
+    </footer>
+
+    <!-- MODAL: PUBLIER UNE OFFRE -->
+    <div id="postJobModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+            <div class="p-6 border-b border-gray-100 flex justify-between items-center sticky top-0 bg-white z-10">
+                <h2 class="text-xl font-bold text-slate-800">Publier une annonce</h2>
+                <button onclick="closeModal('postJobModal')" class="text-slate-400 hover:text-red-500"><i class="fas fa-times text-xl"></i></button>
+            </div>
+            
+            <form id="jobForm" class="p-6 space-y-4">
+                <!-- Champs Communs -->
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Titre de l'annonce</label>
+                    <input type="text" required placeholder="Ex: Professeur de Maths disponible" class="w-full border border-gray-300 rounded-lg p-2 focus:ring-brand-500 focus:border-brand-500">
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Catégorie</label>
+                        <select id="postCategory" onchange="toggleSpecificFields()" class="w-full border border-gray-300 rounded-lg p-2">
+                            <option value="Intellectuel">Intellectuel / Digital</option>
+                            <option value="Manuel">Manuel / BTP</option>
+                            <option value="Médical">Médical</option>
+                            <option value="Agricole">Agricole</option>
+                            <option value="Domestique">Domestique</option>
+                            <option value="Touristique">Tourisme</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Région (Sénégal)</label>
+                        <select class="w-full border border-gray-300 rounded-lg p-2">
+                            <option>Dakar</option><option>Thiès</option><option>Saint-Louis</option><option>Kaolack</option><option>Ziguinchor</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Budget (FCFA)</label>
+                    <input type="text" placeholder="Ex: 50 000 FCFA / jour ou Sur devis" class="w-full border border-gray-300 rounded-lg p-2">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Description</label>
+                    <textarea rows="3" class="w-full border border-gray-300 rounded-lg p-2"></textarea>
+                </div>
+
+                <!-- Champs Spécifiques (Dynamiques) -->
+                <div id="specificFields" class="bg-slate-50 p-4 rounded-lg border border-slate-200">
+                    <!-- JS injectera les champs ici -->
+                </div>
+
+                <button type="submit" class="w-full bg-brand-600 text-white py-3 rounded-lg font-bold hover:bg-brand-700 transition">Publier maintenant</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: LOGIN -->
+    <div id="loginModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-md p-6">
+            <h2 class="text-xl font-bold mb-4 text-center">Connexion Yuppe</h2>
+            <form class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-slate-700">Email</label>
+                    <input type="email" class="w-full border p-2 rounded-lg">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-700">Mot de passe</label>
+                    <input type="password" class="w-full border p-2 rounded-lg">
+                </div>
+                <button class="w-full bg-brand-600 text-white py-2 rounded-lg">Se connecter</button>
+            </form>
+            <div class="mt-4 text-center">
+                <button onclick="closeModal('loginModal')" class="text-sm text-slate-500">Annuler</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // --- 1. DONNÉES SIMULÉES (Base de données locale temporaire) ---
+        const mockJobs = [
+            {
+                id: 1,
+                title: "Développeur Fullstack React",
+                category: "Intellectuel",
+                location: "Dakar",
+                budget: "300 000 FCFA / mois",
+                desc: "Recherche expert React/Node pour projet e-commerce de 3 mois.",
+                tags: ["React", "Node.js", "Remote"],
+                author: "TechStart SN"
+            },
+            {
+                id: 2,
+                title: "Maçon pour rénovation toiture",
+                category: "Manuel",
+                location: "Thiès",
+                budget: "Sur devis",
+                desc: "Réparation urgente toiture villa 100m². Matériel fourni.",
+                tags: ["Maçonnerie", "Rénovation"],
+                author: "Serigne M."
+            },
+            {
+                id: 3,
+                title: "Médecin Généraliste à domicile",
+                category: "Médical",
+                location: "Dakar",
+                budget: "25 000 FCFA / visite",
+                desc: "Consultations à domicile Almadies et Fann. Dispo Soir/Weekend.",
+                tags: ["Urgence", "Domicile"],
+                author: "Dr. Diop"
+            },
+            {
+                id: 4,
+                title: "Terrain 2 Hectares location agricole",
+                category: "Agricole",
+                location: "Kaolack",
+                budget: "500 000 FCFA / an",
+                desc: "Terrain arrosable, idéal pour cultures maraîchères. Hangar disponible.",
+                tags: ["Location", "Maraîchage"],
+                author: "Ferme Sénégal"
+            },
+            {
+                id: 5,
+                title: "Professeur de Maths (6ème - 3ème)",
+                category: "Intellectuel",
+                location: "Saint-Louis",
+                budget: "3 000 FCFA / heure",
+                desc: "Soutien scolaire à domicile. Résultats garantis.",
+                tags: ["Maths", "Soutien"],
+                author: "Awa S."
+            },
+            {
+                id: 6,
+                title: "Guide Touristique Niokolo Koba",
+                category: "Touristique",
+                location: "Tambacounda",
+                budget: "Sur devis",
+                desc: "Guide francophone et anglais certifié pour safaris.",
+                tags: ["Nature", "Safari"],
+                author: "Nature Tour"
+            }
+        ];
+
+        // --- 2. RENDU DES CARTES ---
+        const jobsGrid = document.getElementById('jobsGrid');
+
+        function renderJobs(data) {
+            jobsGrid.innerHTML = '';
+            data.forEach(job => {
+                const card = `
+                    <div class="bg-white rounded-xl shadow-sm hover:shadow-md transition duration-300 border border-slate-100 overflow-hidden flex flex-col h-full">
+                        <div class="p-5 flex-1">
+                            <div class="flex justify-between items-start mb-2">
+                                <span class="bg-brand-50 text-brand-600 text-xs font-bold px-2 py-1 rounded uppercase tracking-wide">${job.category}</span>
+                                <span class="text-slate-400 text-xs"><i class="fas fa-map-marker-alt"></i> ${job.location}</span>
+                            </div>
+                            <h3 class="text-lg font-bold text-slate-800 mb-2 leading-tight">${job.title}</h3>
+                            <p class="text-slate-600 text-sm mb-4 line-clamp-2">${job.desc}</p>
+                            
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                ${job.tags.map(tag => `<span class="text-xs bg-slate-100 text-slate-600 px-2 py-1 rounded">${tag}</span>`).join('')}
+                            </div>
+                            
+                            <div class="font-bold text-slate-900 text-sm mb-4">
+                                <i class="fas fa-coins text-brand-500 mr-1"></i> ${job.budget}
+                            </div>
+                        </div>
+                        <div class="px-5 py-4 bg-slate-50 border-t border-slate-100">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 rounded-full bg-slate-300 flex items-center justify-center text-slate-600 text-xs font-bold">
+                                        ${job.author.charAt(0)}
+                                    </div>
+                                    <span class="ml-2 text-xs text-slate-500 font-medium">${job.author}</span>
+                                </div>
+                                <button onclick="contactPro('${job.author}')" class="text-brand-600 hover:text-brand-800 font-semibold text-sm">
+                                    Contacter
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                jobsGrid.innerHTML += card;
+            });
+        }
+
+        // --- 3. FILTRES ---
+        function filterByCategory(cat) {
+            if (cat === 'all') {
+                renderJobs(mockJobs);
+            } else {
+                const filtered = mockJobs.filter(j => j.category === cat);
+                renderJobs(filtered);
+            }
+        }
+
+        function filterJobs() {
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            const location = document.getElementById('locationFilter').value;
+
+            const filtered = mockJobs.filter(job => {
+                const matchSearch = job.title.toLowerCase().includes(search) || job.desc.toLowerCase().includes(search);
+                const matchLocation = location === "" || job.location === location;
+                return matchSearch && matchLocation;
+            });
+
+            renderJobs(filtered);
+        }
+
+        // --- 4. GESTION DES MODALES ---
+        function openModal(id) {
+            document.getElementById(id).classList.remove('hidden');
+            document.getElementById(id).classList.add('fade-in');
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.add('hidden');
+        }
+
+        // --- 5. FORMULAIRES DYNAMIQUES ---
+        const specificFields = {
+            'Intellectuel': '<label class="block text-sm font-medium">Technologies / Matières</label><input type="text" class="w-full border p-2 rounded mb-2" placeholder="Ex: React, Droit, Anglais..."><label class="block text-sm font-medium">Niveau requis</label><select class="w-full border p-2 rounded"><option>Junior</option><option>Expérimenté</option><option>Expert</option></select>',
+            'Manuel': '<label class="block text-sm font-medium">Types de travaux</label><input type="text" class="w-full border p-2 rounded mb-2" placeholder="Ex: Plomberie, Électricité..."><label class="block text-sm font-medium">Outils fournis ?</label><select class="w-full border p-2 rounded"><option>Oui, par le pro</option><option>Non, par le client</option></select>',
+            'Médical': '<label class="block text-sm font-medium">Spécialité</label><input type="text" class="w-full border p-2 rounded mb-2" placeholder="Ex: Cardiologie, Pédiatrie..."><label class="block text-sm font-medium">Lieu de consultation</label><select class="w-full border p-2 rounded"><option>Cabinet</option><option>Domicile</option><option>Téléconsultation</option></select>',
+            'Agricole': '<label class="block text-sm font-medium">Surface / Terrain</label><input type="text" class="w-full border p-2 rounded mb-2" placeholder="Ex: 2 Hectares"><label class="block text-sm font-medium">Type de culture</label><input type="text" class="w-full border p-2 rounded" placeholder="Ex: Arachide, Mil, Maraîcher...">',
+            'Domestique': '<label class="block text-sm font-medium">Type de service</label><select class="w-full border p-2 rounded mb-2"><option>Ménage</option><option>Garde d\'enfants</option><option>Cuisine</option></select><label class="block text-sm font-medium">Hébergement</label><select class="w-full border p-2 rounded"><option>Non requis</option><option>Chambre fournie</option></select>',
+            'Touristique': '<label class="block text-sm font-medium">Langues parlées</label><input type="text" class="w-full border p-2 rounded mb-2" placeholder="Français, Anglais, Wolof..."><label class="block text-sm font-medium">Capacité max</label><input type="number" class="w-full border p-2 rounded" placeholder="Ex: 10 personnes">'
+        };
+
+        function toggleSpecificFields() {
+            const category = document.getElementById('postCategory').value;
+            const container = document.getElementById('specificFields');
+            if (specificFields[category]) {
+                container.innerHTML = specificFields[category];
+            } else {
+                container.innerHTML = '<p class="text-slate-500 text-sm">Pas de champs spécifiques pour cette catégorie.</p>';
+            }
+        }
+
+        function contactPro(author) {
+            alert(`Fonctionnalité de messagerie : Demande de contact envoyée à ${author}. Redirection vers WhatsApp ou formulaire de mail.`);
+            window.location.href = `https://wa.me/221761642285?text=Bonjour, je suis intéressé par l'annonce de ${author} sur Yuppe.`;
+        }
+
+        // --- INITIALISATION ---
+        window.onload = function() {
+            renderJobs(mockJobs);
+            toggleSpecificFields(); // Initialiser les champs du formulaire
+        };
+
+    </script>
+</body>
+</html>
+```
